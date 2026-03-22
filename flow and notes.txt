@@ -1,5 +1,6 @@
 FLOW:
 
-1) read csv
+1) read csv ()
 2) apply low pass butterworth of accz (order 2 or 4)
+3) normalize to 0 to 1
 ?) xcorr(signal, "normalized")

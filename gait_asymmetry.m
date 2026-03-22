@@ -1,5 +1,5 @@
 close all
-clear all
+%clear all
 
 T = readtable("linear_acceleration_2026-03-21_13.12.16.csv");
 T = renamevars(T, ["aT_m_s_2_", "ax_m_s_2_", "ay_m_s_2_", "az_m_s_2_"], ["aT_m_s_2", "ax_m_s_2", "ay_m_s_2", "az_m_s_2"])
@@ -11,7 +11,6 @@ xlabel("time");
 ylabel("az_m_s_2");
 title("az_m_s_2 vs time");
 legend("show");
-
 
 acc_z = T.az_m_s_2
 
@@ -27,3 +26,17 @@ xlabel("time");
 ylabel("az_m_s_2");
 title("az_m_s_2 (filtered) vs time");
 legend('az_m_s_2', 'az_m_s_2 after LPF');
+
+min_acc = min(acc_z_filt);
+max_acc = max(acc_z_filt);
+
+norm_acc = (acc_z_filt - min_acc) / (max_acc - min_acc);
+
+figure(3)
+plot(T.time, norm_acc)
+xlabel("time")
+ylabel("az_m_s_2")
+title("az_m_s_2 (filtered, normalized) vs time")
+legend("norm az_m_s_2")
+
+
