@@ -1,6 +1,29 @@
+NOTES:
+ACF at first step basically asks, how much should i time shift the same signal 
+such that i get the same signal overlapping (high corr peak)
+
+this time shift will the time taken to complete an gait cycle (stride/CNT value here)
+
+locs(0) is when shift l = 0 so take next highest 
+
+
 FLOW:
 
-1) read csv ()
-2) apply low pass butterworth of accz (order 2 or 4)
-3) normalize to 0 to 1
-?) xcorr(signal, "normalized")
+1) read actual walking csv 
+2) apply low pass butterworth of accz (order 2 or 4, the std. of gait analysis)
+3) normalize from 0 to 1
+4) trim starting and ending (paper uses 800 samples for 8s)
+...
+...
+?) xcorr(signal, "normalized") (the crucial step here)
+...
+
+
+
+QUESTIONS:
+1) why 67 samples is probably generalized? 
+2) what is the thershold (for classification of UW and NW)?
+3) 
+
+POSSIBLE IMPROVEMENTS?:
+1) can find the no. of time samples(CNT) for each individual signals using
