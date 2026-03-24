@@ -62,10 +62,10 @@ legend("ACF")
 grid on;
 
 p_shifts = shifts(shifts > 0)'; %taking transpose cuz its row vector
-p_ACF = ACF_1(shifts > 0);
+p_ACF = ACF_1(shifts > 0);  %locs(1) is when shift l = 0 so take next highest. But shifts > 0 does the job for us
 
 [pks locs] = findpeaks(p_ACF, p_shifts, "MinPeakDistance", 30); %TODO: give tweaks in 4th parameter here
-CNT = locs(1) %locs(0) is when shift l = 0 so take next highest
+CNT = locs(1)
 
 t_full_cycle = CNT/100; %time taken to make one full gait cycle (fs = 100 Hz)
 

@@ -1,18 +1,22 @@
 NOTES:
-ACF at first step basically asks, how much should i time shift the same signal 
-such that i get the same signal overlapping (high corr peak)
+1) filtfilt = filter in fw dir., fold and filter again
+   filter = only in fw dir
 
-this time shift will the time taken to complete an gait cycle (stride/CNT value here)
+2) ACF at first step basically asks, how much should i time shift the same signal 
+   such that i get the same signal overlapping (high corr peak)
 
-locs(0) is when shift l = 0 so take next highest 
+   this time shift will the time taken to complete an gait cycle (stride/CNT value here)
+
+   locs(0) is when shift l = 0 so take next highest 
 
 
 FLOW:
 
 1) read actual walking csv 
-2) apply low pass butterworth of accz (order 2 or 4, the std. of gait analysis)
+2) apply low pass butterworth of accz (order 2 or 4, the std. for gait analysis)
 3) normalize from 0 to 1
 4) trim starting and ending (paper uses 800 samples for 8s)
+5) take xcorr of norm_signal to find the stride length
 ...
 ...
 ?) xcorr(signal, "normalized") (the crucial step here)
@@ -20,10 +24,14 @@ FLOW:
 
 
 
-QUESTIONS:
-1) why 67 samples is probably generalized? 
-2) what is the thershold (for classification of UW and NW)?
-3) 
+QUESTIONS TO BE ADDRESSED:
+1) what is the thershold (for classification of UW and NW)?
+2) tweaks in cutoff freq of filter and the range of findpeaks func
 
-POSSIBLE IMPROVEMENTS?:
-1) can find the no. of time samples(CNT) for each individual signals using
+
+POSSIBLE IMPROVEMENTS(in future?):
+1) can find the no. of time samples(CNT) for each individual signals using ACF 
+   instead of generalized value in paper (DONE!!)
+2) Use ML to classify instead of ACF
+3) sensor fusion, make use of other parameters (accx, accy, gyroscope) 
+4) target a specific disease detection (like multiple scholisis, in joquain paper)
