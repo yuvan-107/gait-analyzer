@@ -1,7 +1,7 @@
 close all
 %clear all
 
-T = readtable("linear_acceleration_2026-03-21_13.12.16.csv");
+T = readtable("linear_acceleration_2026-03-21_13.12.16.csv"); %test signal
 T = renamevars(T, ["aT_m_s_2_", "ax_m_s_2_", "ay_m_s_2_", "az_m_s_2_"], ["aT_m_s_2", "ax_m_s_2", "ay_m_s_2", "az_m_s_2"])
 
 figure(1)
@@ -67,7 +67,7 @@ p_ACF = ACF_1(shifts > 0);  %locs(1) is when shift l = 0 so take next highest. B
 [pks locs] = findpeaks(p_ACF, p_shifts, "MinPeakDistance", 30); %TODO: give tweaks in 4th parameter here
 CNT = locs(1)
 
-t_full_cycle = CNT/100; %time taken to make one full gait cycle (fs = 100 Hz)
+T_full_cycle = CNT/100; %time taken to make one full gait cycle (fs = 100 Hz)
 
-
-
+num_steps = floor(length(norm_acc)/CNT);
+STEP_COUNT = reshape(norm_acc(1 : num_steps * CNT), CNT, num_steps); 

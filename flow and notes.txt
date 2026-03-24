@@ -1,6 +1,20 @@
+FLOW:
+
+1) read actual walking csv 
+2) apply low pass butterworth of accz (order 2 or 4, the std. for gait analysis)
+3) normalize from 0 to 1
+4) trim starting and ending (paper uses 800 samples for 8s)
+5) take xcorr of norm_signal to find the stride length (CNT)
+6) take CNT sized chunks of samples from the norm_signal, which will be the steps_count
+7) compare the similarity of the step_count[i-1] with steps_count[i] using xcorr. Store them in a array
+8) if ACF > thershold NW or UW
+
+
 NOTES:
-1) filtfilt = filter in fw dir., fold and filter again
+1) filtfilt = filter in fw dir., fold and filter again, retains original phase
    filter = only in fw dir
+
+2) findpeaks finds maxima
 
 2) ACF at first step basically asks, how much should i time shift the same signal 
    such that i get the same signal overlapping (high corr peak)
@@ -8,19 +22,6 @@ NOTES:
    this time shift will the time taken to complete an gait cycle (stride/CNT value here)
 
    locs(0) is when shift l = 0 so take next highest 
-
-
-FLOW:
-
-1) read actual walking csv 
-2) apply low pass butterworth of accz (order 2 or 4, the std. for gait analysis)
-3) normalize from 0 to 1
-4) trim starting and ending (paper uses 800 samples for 8s)
-5) take xcorr of norm_signal to find the stride length
-...
-...
-?) xcorr(signal, "normalized") (the crucial step here)
-...
 
 
 
@@ -33,5 +34,6 @@ POSSIBLE IMPROVEMENTS(in future?):
 1) can find the no. of time samples(CNT) for each individual signals using ACF 
    instead of generalized value in paper (DONE!!)
 2) Use ML to classify instead of ACF
-3) sensor fusion, make use of other parameters (accx, accy, gyroscope) 
-4) target a specific disease detection (like multiple scholisis, in joquain paper)
+3) target a specific disease detection (like multiple scholisis, in joquain paper) 
+4) sensor fusion, make use of other parameters (accx, accy, gyroscope)
+5) upgrade to STFT?
