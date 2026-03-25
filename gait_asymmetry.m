@@ -1,11 +1,14 @@
 close all
 %clear all
 
-T = readtable("linear_acceleration_2026-03-21_13.12.16.csv"); %test signal
-T = renamevars(T, ["aT_m_s_2_", "ax_m_s_2_", "ay_m_s_2_", "az_m_s_2_"], ["aT_m_s_2", "ax_m_s_2", "ay_m_s_2", "az_m_s_2"])
+% T = readtable("linear_acceleration_2026-03-21_13.12.16.csv"); %test signal 1
+% T = renamevars(T, ["aT_m_s_2_", "ax_m_s_2_", "ay_m_s_2_", "az_m_s_2_"], ["aT_m_s_2", "ax_m_s_2", "ay_m_s_2", "az_m_s_2"])
+
+T = readtable("Raw Data.csv"); %test signal 2, physiobox
+T = renamevars(T, ["LinearAccelerationZ_m_s_2_", "Time_s_"], ["az_m_s_2", "time"])
 
 figure(1)
-plot(T.time,T.az_m_s_2,XDataSource = 'T.time',YDataSource = 'T.az_m_s_2');
+plot(T.time,T.az_m_s_2);
 linkdata on;
 xlabel("time");
 ylabel("az_m_s_2");
@@ -15,34 +18,37 @@ legend("show");
 acc_z = T.az_m_s_2
 
 Ws = 100;
-Wc = 3;
+Wc = 2.5;
 [b, a] = butter(4, Wc/(Ws/2), 'low'); %TODO: tweak filter design
 acc_z_filt = filtfilt(b, a, acc_z);
 
 figure(2)
-plot(T.time, acc_z, 'r'); hold on;
+subplot(3,1,1)
+plot(T.time, acc_z, 'r'); 
+xlabel("time");
+ylabel("az_m_s_2");
+title("az_m_s_2 vs time")
+subplot(3,1,2)
 plot(T.time, acc_z_filt, 'b');
 xlabel("time");
 ylabel("az_m_s_2");
 title("az_m_s_2 (filtered) vs time");
-legend('az_m_s_2', 'az_m_s_2 after LPF');
 
 min_acc = min(acc_z_filt);
 max_acc = max(acc_z_filt);
 
 norm_acc = (acc_z_filt - min_acc) / (max_acc - min_acc); %min max normalization
 
-figure(3)
+subplot(3,1,3)
 plot(T.time, norm_acc)
 xlabel("time")
 ylabel("az_m_s_2")
 title("az_m_s_2 (filtered, normalized) vs time")
-legend("norm az_m_s_2")
 
 % norm_acc = trimdata(norm_acc,50,Side="both");
 % time = trimdata(T.time, 50, Side="both");
 % 
-% figure(4)
+% figure(3)
 % plot(time, norm_acc)
 % xlabel("time")
 % ylabel("az_m_s_2")
@@ -53,7 +59,7 @@ time = T.time;
 
 [ACF_1, shifts]= xcorr(norm_acc, 'normalized')
 
-figure(5)
+figure(4)
 plot(shifts, ACF_1)
 xlabel("Shifts")
 ylabel("ACF (normalized)")
@@ -71,3 +77,4 @@ T_full_cycle = CNT/100; %time taken to make one full gait cycle (fs = 100 Hz)
 
 num_steps = floor(length(norm_acc)/CNT);
 STEP_COUNT = reshape(norm_acc(1 : num_steps * CNT), CNT, num_steps); 
+
