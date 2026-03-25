@@ -5,9 +5,11 @@ FLOW:
 3) normalize from 0 to 1
 4) trim starting and ending (paper uses 800 samples for 8s)
 5) take xcorr of norm_signal to find the stride length (CNT)
-6) take CNT sized chunks of samples from the norm_signal, which will be the steps_count
+6) using CNT, we can detect steps by taking CNT sized chunks of samples from the norm_signal, 
+   which will be the steps_count 
 7) compare the similarity of the step_count[i-1] with steps_count[i] using xcorr. Store them in a array
-8) if ACF > thershold NW or UW
+8) if ACF > thershold NW or else UW
+9) F1 score
 
 
 NOTES:
@@ -33,7 +35,8 @@ QUESTIONS TO BE ADDRESSED:
 POSSIBLE IMPROVEMENTS(in future?):
 1) can find the no. of time samples(CNT) for each individual signals using ACF 
    instead of generalized value in paper (DONE!!)
-2) Use ML to classify instead of ACF
+2) use template based step detection algroithm (in Laurent paper)
 3) target a specific disease detection (like multiple scholisis, in joquain paper) 
 4) sensor fusion, make use of other parameters (accx, accy, gyroscope)
 5) upgrade to STFT?
+6) Use ML to classify instead of ACF 
