@@ -77,28 +77,28 @@ T_full_cycle = CNT/100; %time taken to make one full gait cycle (fs = 100 Hz)
 
 num_steps = floor(length(norm_acc)/CNT);
 STEP_COUNT = reshape(norm_acc(1 : num_steps * CNT), CNT, num_steps); 
-% --- ADDITION: GAIT ASYMMETRY THRESHOLD ---
 
-% Make sure we actually found at least 2 peaks to compare
+
+
 if length(pks) >= 2
-    step_regularity = pks(1);   % Similarity between L and R steps
-    stride_regularity = pks(2); % Similarity between L and L (or R and R) strides
+    step_regularity = pks(1);  
+    stride_regularity = pks(2); 
     
-    % Calculate Symmetry Ratio
+    
     symmetry_ratio = step_regularity / stride_regularity;
     
     fprintf('Step Regularity (Peak 1): %.3f\n', step_regularity);
     fprintf('Stride Regularity (Peak 2): %.3f\n', stride_regularity);
     fprintf('Calculated Symmetry Ratio: %.3f\n', symmetry_ratio);
     
-    % Define the threshold for natural walking
+    
     symmetry_threshold = 0.85; 
     
-    % Classification
+    
     if symmetry_ratio >= symmetry_threshold
-        disp('RESULT: Natural/Symmetrical Walking Detected.');
+        disp('RESULT: Natural Walking Detected.');
     else
-        disp('RESULT: Unnatural/Asymmetrical Walking Detected.');
+        disp('RESULT: Unnatural Walking Detected.');
     end
 else
     disp('ERROR: Could not find enough peaks to analyze symmetry. Check filter or MinPeakDistance.');
