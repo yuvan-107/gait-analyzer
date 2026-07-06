@@ -1,22 +1,20 @@
-FLOW:
+ METHOD:
 
-1) read actual walking csv, take accz from it 
-2) apply low pass butterworth on accz (order 2 or 4, the std. for gait analysis)
-3) normalize from 0 to 1
-4) trim starting and ending (paper uses 800 samples for 8s)
-5) take xcorr of norm_signal to find the CNT
-6) using CNT, we can detect steps by taking CNT sized chunks of samples from the norm_signal, 
-   which will be the steps_count 
-7) compare the similarity of the step_count[i-1] with steps_count[i] using xcorr. Store them in a array
-8) if ACF > thershold NW or else UW
-9) F1 score
+1) read actual walking csv from phone, take accz from it 
+2) apply low pass butterworth on accz
+3) normalize using Z Score
+4) take xcorr of norm_signal to find the CNT (stride length)
+5) using CNT, we can detect steps by taking CNT sized chunks of samples from the norm_signal
+6) compare the similarity of the step_count[i-1] with steps_count[i] using xcorr. Store them in a array
+7) if ACF > thershold NW or else UW
+8) F1 score
 
 
-NOTES:
+NOTES FOR FUTURE SELF:
 1) filtfilt = filter in fw dir., fold and filter again, retains original phase
    filter = only in fw dir
 
-2) findpeaks finds maxima, minpeakdistance ignores the next 30 peaks 
+2) findpeaks finds maxima, minpeakdistance ignores the next peakspresent for 120 units
 
 2) ACF at first step basically asks, how much should i time shift the same signal 
    such that i get the same signal overlapping (high corr peak)
@@ -27,11 +25,6 @@ NOTES:
 
 
 
-QUESTIONS TO BE ADDRESSED:
-1) what is the thershold (for classification of UW and NW)? Take from Louise bart paper
-2) tweaks in cutoff freq of filter and the range of findpeaks func
-
-
 POSSIBLE IMPROVEMENTS(in future?):
 1) can find the no. of time samples(CNT) for each individual signals using ACF 
    instead of generalized value in paper (DONE!!)
@@ -39,4 +32,4 @@ POSSIBLE IMPROVEMENTS(in future?):
 3) target a specific disease detection (like multiple scholisis, in joquain paper) 
 4) sensor fusion, make use of other parameters (accx, accy, gyroscope)
 5) upgrade to STFT?
-6) Use ML to classify instead of ACF 
+6) Use ML classification (like classical ML or CNN)

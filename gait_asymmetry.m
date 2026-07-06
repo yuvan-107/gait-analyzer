@@ -1,10 +1,7 @@
 close all
 %clear all
 
-% T = readtable("linear_acceleration_2026-03-21_13.12.16.csv"); %test signal 1
-% T = renamevars(T, ["aT_m_s_2_", "ax_m_s_2_", "ay_m_s_2_", "az_m_s_2_"], ["aT_m_s_2", "ax_m_s_2", "ay_m_s_2", "az_m_s_2"])
-
-T = readtable(fullfile("NW", "Raw Data(3).csv")); %test signal 2, physiobox 
+T = readtable(fullfile("UW", "Raw Data(10).csv")); %replace with NW/UW and Raw Data(x) where x is a number
 T = renamevars(T, ["LinearAccelerationZ_m_s_2_", "Time_s_"], ["az_m_s_2", "time"]);
 
 fs = 100;
@@ -91,8 +88,8 @@ end
 avg_correlation = mean(correlation_values);
 fprintf('Average Left-Right Autocorrelation: %f\n', avg_correlation);
 
-if avg_correlation > 0.50
-    fprintf('Result: NATURAL WALKING\n');
+if avg_correlation > 0.50 % for eg
+    fprintf('Result:NATURAL WALKING\n');
 else
-    fprintf('Result: UNNATURAL WALKING\n');
+    fprintf('Result:UNNATURAL WALKING\n');
 end
